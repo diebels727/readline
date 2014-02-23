@@ -3,35 +3,43 @@ import (
   "bufio"
   "os"
   "strconv"
+  "strings"
+  "github.com/diebels727/vertex"
+  "github.com/diebels727/edge"
 )
 
-func Ints(path string) ([]int,error) {
+func ReadEdges(path string) ([]edge.Edge,error) {
   //open input file
   file,err := os.Open(path)
   if err != nil { return nil,err }
-  var ints []int
+
+  var edges []edge.Edge
+
   scanner := bufio.NewScanner(file)
   for scanner.Scan() {
-    i,err := strconv.Atoi(scanner.Text())
-    if err != nil { return nil,err }
-    ints = append(ints,i)
+
+    fields := strings.Fields(scanner.Text())
+    i0,err_i0 := strconv.Atoi(fields[0])
+    i1,err_i1 := strconv.Atoi(fields[1])
+    if err_i0 != nil { return nil,err_i0}
+    if err_i1 != nil { return nil,err_i1}
+    v0 := vertex.Vertex{Id:i0}
+    v1 := vertex.Vertex{Id:i1}
+    e := edge.Edge{V0:v0,V1:v1}
+    edges = append(edges,e)
   }
-  return ints,nil
+  return edges,nil
 }
 
-func AdjacencyListInts(path string) {
+func Map(path string,fn func(f []string)) {
   //open input file
-  file,err := os.Open(path)
-  if err != nil {return nil,err }
-  var ints []int
+  file,_ := os.Open(path)
+
   scanner := bufio.NewScanner(file)
+
   for scanner.Scan() {
-    i,err := strconf.Atoi(scanner.Text())
-    if error != nil { return nil,err }
+    fields := strings.Fields(scanner.Text())
+    fn(fields)
   }
+  return
 }
-
-func main() {
-  AdjacencyListInts('kargerMinCut.txt')
-}
-
