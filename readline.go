@@ -31,15 +31,12 @@ func ReadEdges(path string) ([]edge.Edge,error) {
   return edges,nil
 }
 
-func Map(path string,fn func(f []string)) {
+func Map(path string,fn func(f string)) {
   //open input file
   file,_ := os.Open(path)
-
   scanner := bufio.NewScanner(file)
-
   for scanner.Scan() {
-    fields := strings.Fields(scanner.Text())
-    fn(fields)
+    fn(scanner.Text())
   }
   return
 }
